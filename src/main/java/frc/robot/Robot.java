@@ -7,6 +7,7 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -34,7 +35,7 @@ public class Robot extends TimedRobot {
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    right.setInverted(true);
+    left.setInverted(true);
   }
 
   @Override
@@ -42,8 +43,12 @@ public class Robot extends TimedRobot {
     // Drive with arcade drive.
     // That means that the Y axis drives forward
     // and backward, and the X turns left and right.
-    double speed = -controller.getLeftY();
-    double turn = controller.getRightX();
+    double speed = MathUtil.applyDeadband(-controller.getLeftY(), 0.05);
+    double turn = MathUtil.applyDeadband(controller.getRightX(), 0.1);
+
+    speed = Math.signum(speed) * Math.pow(Math.abs(speed), 2.0);
+    turn = Math.signum(turn) * Math.pow(Math.abs(turn), 2.0);
+
     drive.arcadeDrive(speed, turn);
   }
 }
