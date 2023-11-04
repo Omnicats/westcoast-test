@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import frc.robot.Constants.CANIds;
+import edu.wpi.first.wpilibj2.command.*;
 
 /**
  * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with
@@ -46,9 +47,16 @@ public class Robot extends TimedRobot {
     double speed = MathUtil.applyDeadband(-controller.getLeftY(), 0.05);
     double turn = MathUtil.applyDeadband(controller.getRightX(), 0.1);
 
-    speed = Math.signum(speed) * Math.pow(Math.abs(speed), 2.0);
-    turn = Math.signum(turn) * Math.pow(Math.abs(turn), 2.0);
+    speed = Math.signum(speed) * Math.pow(Math.abs(speed), 1.01);
+    turn = Math.signum(turn) * Math.pow(Math.abs(turn), 1.01);
+    
+    drive.arcadeDrive(speed*0.6, turn*0.6);
 
-    drive.arcadeDrive(speed, turn);
+    // var command = new SequentialCommandGroup(
+    //   new GoTo(drive)
+    // )
+    // if(controller.getAButtonPressed()){
+    //   command.schedule();
+    // }
   }
 }
