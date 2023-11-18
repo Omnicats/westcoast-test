@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
   );
   private final DifferentialDrive drive = new DifferentialDrive(left, right);
   private final XboxController controller = new XboxController(0);
+  private final LimelightHelpers limelightHelpers = new LimelightHelpers();
 
   @Override
   public void robotInit() {
@@ -58,5 +59,20 @@ public class Robot extends TimedRobot {
     // if(controller.getAButtonPressed()){
     //   command.schedule();
     // }
+  }
+
+  @Override
+  public void robotPeriodic() {
+    // Right-handed coordinate system. +Y is up.
+    double[] botPose = LimelightHelpers.getBotPose("limelight");
+    double x = botPose[0],
+      y = botPose[1],
+      z = botPose[2],
+      roll = botPose[3],
+      pitch = botPose[4],
+      yaw = botPose[5];
+  
+    System.out.printf("X: %.2f. Y: %.2f. Z: %.2f. Roll: %.2f, pitch: %.2f, yaw: %.2f\n",
+      x, y, z, roll, pitch, yaw);
   }
 }
